@@ -12,6 +12,14 @@ JIM runs on your own computer. It combines several free LLMs into one assistant,
                                                             └─ + any model you add
 ```
 
+## Open JIM
+
+**Web app:** **https://amaljith75.github.io/jim**
+
+The page is hosted on GitHub, but JIM's brain runs on your own computer. That's what lets it open apps, hear you and keep your keys private. Start the JIM server once (see below) and the web app connects to it automatically. The first time, Chrome asks to let the site *access devices on your local network*. Click **Allow**.
+
+You can also skip GitHub entirely and open **http://localhost:8765**, which serves the same app.
+
 ## 1. Install (5 minutes)
 
 1. Install **Python 3.10+** from python.org. On Windows, tick "Add Python to PATH".
@@ -20,7 +28,7 @@ JIM runs on your own computer. It combines several free LLMs into one assistant,
    * **Windows:** double-click `scripts\start-windows.bat`
    * **macOS / Linux:** `./scripts/start-mac-linux.sh`
    * or by hand: `pip install -r requirements.txt` then `python run.py`
-4. Your browser opens **http://localhost:8765**. Use **Chrome or Edge** for voice.
+4. Your browser opens **http://localhost:8765**. You can also use **https://amaljith75.github.io/jim**. Use **Chrome or Edge** for voice.
 
 ## 2. Give JIM a brain (free)
 
@@ -92,6 +100,7 @@ Pick one from the top bar: **JIM (Classic butler)**, **Professional**, **Buddy**
 ## 6. Safety & privacy
 
 * By default JIM listens only on `localhost`, so nothing on your network can reach it.
+* Only two web pages may talk to your JIM server: its own page (`localhost:8765`) and `https://amaljith75.github.io`. The server blocks requests from every other website, disguised form posts, and DNS-rebinding tricks. To allow another site, start JIM with `python run.py --allow-origin https://your.site`.
 * Your API keys stay in `data/providers.json` on your PC. The browser only sees the last 4 characters.
 * Shutdown, restart, sleep and shell commands need a **Yes, do it** click. Shell commands are **off** by default (Settings → System).
 * Turning off **Allow JIM to control this computer** makes JIM a chat-only assistant.
@@ -125,7 +134,8 @@ jim/llm.py          one OpenAI-compatible client for every provider
 jim/actions.py      41 system-control tools (Windows / macOS / Linux)
 jim/intents.py      instant voice-command parser
 jim/memory.py       chat history + remembered facts (SQLite)
-web/                the interface (plain HTML/CSS/JS, works offline)
+web/                the interface (plain HTML/CSS/JS) — also deployed to GitHub Pages
+.github/workflows/  auto-deploys web/ to GitHub Pages on every push
 config/             default providers + personalities (copied to data/ on first run)
 data/               YOUR keys, settings, chats - back this up, never share it
 ```
@@ -137,6 +147,7 @@ data/               YOUR keys, settings, chats - back this up, never share it
 * **"can't connect to localhost:11434"**: Ollama isn't running. Start it, or turn its card off.
 * **HTTP 429**: that free tier is rate-limited. Auto mode already falls through to the next model, so add more providers.
 * **HTTP 404 / model not found**: the free model was retired. Click **Fetch models** and pick a new one.
-* **Mic does nothing**: use Chrome or Edge, allow microphone access, and open the page via `localhost`, not an IP address.
+* **Mic does nothing**: use Chrome or Edge and allow microphone access. Open the page through `localhost` or the GitHub link, not an IP address.
+* **GitHub web app says "JIM isn't running"**: first check that the start script's window is open. Then allow *local network access* for the site: click the icon left of the address bar → Site settings → Local network access → Allow. Brave blocks this by default, so use Chrome or Edge, or open http://localhost:8765 directly.
 * **Keys/tabs don't work on Linux**: pyautogui needs an X11 session. On Wayland, log in with "Ubuntu on Xorg".
 * **macOS**: allow your terminal under System Settings → Privacy & Security → **Accessibility** and **Microphone**.

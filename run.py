@@ -31,13 +31,18 @@ def main():
     ap.add_argument("--lan", action="store_true", help="listen on your local network (requires access token)")
     ap.add_argument("--token", default=os.environ.get("JIM_TOKEN", ""), help="access token for --lan mode")
     ap.add_argument("--no-browser", action="store_true")
+    ap.add_argument("--allow-origin", action="append", default=[], metavar="URL",
+                    help="extra website allowed to use this server (GitHub Pages UI is allowed already)")
     ap.add_argument("--dry-run", action="store_true", help="log system actions instead of performing them")
     a = ap.parse_args()
 
     host = "127.0.0.1"
     if a.lan:
         host = "0.0.0.0"
+        os.environ["JIM_LAN"] = "1"
         os.environ["JIM_TOKEN"] = a.token or secrets.token_urlsafe(12)
+    if a.allow_origin:
+        os.environ["JIM_ALLOWED_ORIGINS"] = ",".join(a.allow_origin)
     if a.dry_run:
         os.environ["JIM_DRY_RUN"] = "1"
 
@@ -48,6 +53,7 @@ def main():
     print("  │   J.I.M  ·  local multi-LLM assistant     │")
     print("  └──────────────────────────────────────────┘")
     print(f"  Open:  {url}")
+    print("    or:  https://amaljith75.github.io/jim  (same app, hosted on GitHub)")
     if a.lan:
         tok = os.environ["JIM_TOKEN"]
         print(f"  Phone: http://{lan_ip()}:{a.port}/?token={tok}")

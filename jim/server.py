@@ -7,7 +7,7 @@ import secrets
 import tempfile
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
 from . import actions, config, llm, memory, orchestrator
@@ -15,16 +15,77 @@ from .config import ROOT
 
 app = FastAPI(title="JIM", docs_url="/api/docs")
 TOKEN = os.environ.get("JIM_TOKEN", "")
+LAN = os.environ.get("JIM_LAN") == "1"
+
+# Websites allowed to talk to this server besides itself. The hosted UI on
+# GitHub Pages is allowed by default; add more with --allow-origin or JIM_ALLOWED_ORIGINS.
+ALLOWED_ORIGINS = {"https://amaljith75.github.io"} | {
+    o.strip().rstrip("/") for o in os.environ.get("JIM_ALLOWED_ORIGINS", "").split(",") if o.strip()
+}
+LOCAL_HOSTS = {"localhost", "127.0.0.1", "[::1]", "::1"}
+SAFE_CONTENT_TYPES = ("text/plain", "application/x-www-form-urlencoded", "multipart/form-data")
+
+
+def _origin_ok(origin: str, request: Request) -> bool:
+    if origin in ALLOWED_ORIGINS:
+        return True
+    host = request.headers.get("host", "")
+    return origin in (f"http://{host}", f"https://{host}")       # same origin
+
+
+def _cors(resp, origin: str):
+    resp.headers["Access-Control-Allow-Origin"] = origin
+    resp.headers["Vary"] = "Origin"
+    return resp
 
 
 @app.middleware("http")
-async def auth(request: Request, call_next):
-    """When JIM is exposed on the network, every API call needs the access token."""
-    if TOKEN and request.url.path.startswith("/api"):
+async def guard(request: Request, call_next):
+    """Keeps random websites from driving your computer through this local server.
+
+    * Host check blocks DNS-rebinding tricks (unless --lan).
+    * Only JIM's own page and the allowed origins (GitHub Pages UI) may call the API.
+    * POSTs must be real JSON/binary requests, which browsers can't send cross-site
+      without the CORS preflight that we answer only for allowed origins.
+    * In --lan mode every API call also needs the access token.
+    """
+    path = request.url.path
+    hostname = request.headers.get("host", "").rsplit(":", 1)[0]
+    if not LAN and hostname not in LOCAL_HOSTS:
+        return JSONResponse({"detail": "Host not allowed"}, status_code=403)
+
+    origin = request.headers.get("origin", "")
+    if not path.startswith("/api"):
+        return await call_next(request)
+
+    if origin and not _origin_ok(origin, request):
+        return JSONResponse({"detail": f"Origin {origin} is not allowed"}, status_code=403)
+
+    if request.method == "OPTIONS":                                     # CORS preflight
+        from fastapi.responses import Response
+        r = Response(status_code=204)
+        r.headers.update({
+            "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "content-type, x-jim-token",
+            "Access-Control-Allow-Private-Network": "true",               # Chrome: public site → localhost
+            "Access-Control-Max-Age": "600",
+        })
+        return _cors(r, origin) if origin else r
+
+    if request.method == "POST":
+        ctype = request.headers.get("content-type", "").split(";")[0].strip().lower()
+        empty = request.headers.get("content-length", "0") == "0" and "transfer-encoding" not in request.headers
+        if (not ctype and not empty) or ctype in SAFE_CONTENT_TYPES:
+            return JSONResponse({"detail": "Unsupported content type"}, status_code=415)
+
+    if TOKEN:
         given = request.headers.get("x-jim-token") or request.query_params.get("token", "")
         if not secrets.compare_digest(given, TOKEN):
-            return JSONResponse({"detail": "Invalid or missing access token"}, status_code=401)
-    return await call_next(request)
+            r = JSONResponse({"detail": "Invalid or missing access token"}, status_code=401)
+            return _cors(r, origin) if origin else r
+
+    resp = await call_next(request)
+    return _cors(resp, origin) if origin else resp
 
 
 # ------------------------------------------------------------------ state
@@ -210,15 +271,5 @@ async def transcribe(req: Request):
 
 
 # ------------------------------------------------------------------- web
-WEB = ROOT / "web"
-app.mount("/static", StaticFiles(directory=WEB), name="static")
-
-
-@app.get("/")
-def index():
-    return FileResponse(WEB / "index.html")
-
-
-@app.get("/manifest.webmanifest")
-def manifest():
-    return FileResponse(WEB / "manifest.webmanifest", media_type="application/manifest+json")
+# The same web/ folder is what GitHub Pages hosts, so the UI uses relative paths.
+app.mount("/", StaticFiles(directory=ROOT / "web", html=True), name="web")

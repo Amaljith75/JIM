@@ -3,84 +3,206 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>J.I.M</title>
-<meta name="theme-color" content="#05080f">
-<link rel="manifest" href="/manifest.webmanifest">
-<link rel="icon" href="/static/icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/static/style.css">
+<title>JIM</title>
+<meta name="theme-color" content="#0b0b0d">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="app">
-  <!-- ============ SIDEBAR ============ -->
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <div class="brand-orb"></div>
-      <div class="brand-name" id="brandName">J.I.M</div>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-brain" viewBox="0 0 24 24"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a2 2 0 0 0-3-1zM15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1"/></symbol>
+    <symbol id="i-models" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3L10 14M21 3l-7 18-4-7-7-4z"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></symbol>
+    <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></symbol>
+    <symbol id="i-ear" viewBox="0 0 24 24"><path d="M7 9a5 5 0 0 1 10 0c0 3-3 4-3 7a3 3 0 0 1-6 0"/><path d="M10 10a2 2 0 0 1 4 0"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-term" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M13 15h4"/></symbol>
+    <symbol id="i-calc" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M14 12h2M8 16h2M14 16h2"/></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M5 3h10l4 4v14H5z"/><path d="M9 11h6M9 15h6"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 8h4l2-3h6l2 3h4v11H3z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  </defs>
+</svg>
+
+<div class="shell">
+  <!-- ============ ICON RAIL ============ -->
+  <nav class="rail" id="rail">
+    <button class="logo" data-nav="home" title="JIM"><span class="logo-orb"></span></button>
+    <div class="rail-group">
+      <button class="rail-btn active" data-nav="home" title="Home"><svg><use href="#i-home"/></svg></button>
+      <button class="rail-btn" data-nav="history" title="Chat history"><svg><use href="#i-history"/></svg></button>
+      <button class="rail-btn" data-nav="overview" title="Overview"><svg><use href="#i-grid"/></svg></button>
+      <button class="rail-btn" data-open-settings="models" title="Models"><svg><use href="#i-models"/></svg></button>
+      <button class="rail-btn" data-open-settings="memory" title="Memory"><svg><use href="#i-brain"/></svg></button>
     </div>
-    <button class="btn primary wide" id="newChat">＋ New chat</button>
+    <div class="rail-group bottom">
+      <button class="rail-btn" data-open-settings="system" title="Profile"><svg><use href="#i-user"/></svg></button>
+      <button class="rail-btn" data-open-settings="models" title="Settings"><svg><use href="#i-gear"/></svg></button>
+    </div>
+  </nav>
+
+  <!-- ============ HISTORY DRAWER ============ -->
+  <aside class="drawer" id="drawer">
+    <div class="drawer-head"><b>Conversations</b><button class="icon-btn" id="closeDrawer"><svg><use href="#i-close"/></svg></button></div>
+    <button class="btn wide" id="newChat"><svg><use href="#i-plus"/></svg> New chat</button>
     <div class="conv-list" id="convList"></div>
-    <div class="side-foot">
-      <button class="btn ghost wide" data-open-settings="memory">🧠 Memory</button>
-      <button class="btn ghost wide" data-open-settings="models">⚙ Settings</button>
-    </div>
   </aside>
 
-  <!-- ============ MAIN ============ -->
-  <main class="main">
+  <!-- ============ WINDOW ============ -->
+  <div class="window">
     <header class="topbar">
-      <button class="icon-btn mobile-only" id="menuBtn" title="Chats">☰</button>
-      <div class="mini-orb" id="miniOrb" title="Tap to talk"></div>
-      <div class="status" id="status">Ready</div>
+      <button class="icon-btn mobile-only" id="menuBtn"><svg><use href="#i-menu"/></svg></button>
+      <button class="icon-btn round" id="backBtn" title="Home"><svg><use href="#i-back"/></svg></button>
+      <nav class="crumbs"><span data-nav="home">Home</span><svg><use href="#i-back"/></svg><b id="crumb">AI Assistant</b></nav>
       <div class="spacer"></div>
-      <select id="personaSel" class="pill-select" title="Personality"></select>
-      <select id="modeSel" class="pill-select" title="How models are combined">
-        <option value="auto">⚡ Auto (fallback)</option>
-        <option value="council">🏛 Council (combine)</option>
-        <option value="race">🏁 Race (fastest)</option>
-        <option value="single">🎯 Single model</option>
-      </select>
-      <select id="singleSel" class="pill-select hidden" title="Model"></select>
-      <span class="model-count" id="modelCount" title="Enabled models"></span>
+      <label class="search"><svg><use href="#i-search"/></svg><input id="search" placeholder="Search Anything..."></label>
+      <button class="icon-btn bell" id="bellBtn" title="Activity"><svg><use href="#i-bell"/></svg><i class="badge hidden" id="bellBadge"></i></button>
+      <button class="avatar" id="avatar" data-open-settings="system" title="Profile">J</button>
+      <div class="search-pop hidden" id="searchPop"></div>
+      <div class="activity-pop hidden" id="activityPop"><div class="pop-head">Activity</div><div id="activityList"><div class="muted small pad">No actions yet.</div></div></div>
     </header>
 
-    <section class="chat" id="chat">
-      <div class="welcome" id="welcome">
-        <div class="orb" id="bigOrb"><div class="orb-core"></div><div class="orb-ring r1"></div><div class="orb-ring r2"></div><div class="orb-ring r3"></div></div>
-        <h1 id="welcomeTitle">Good to see you.</h1>
-        <p class="muted">Tap the orb or press <kbd>Ctrl</kbd>+<kbd>Space</kbd> to talk. Try:</p>
-        <div class="chips" id="examples">
-          <button class="chip">Open Spotify and Chrome</button>
-          <button class="chip">Next tab</button>
-          <button class="chip">Search for ESP32-C6 pinout</button>
-          <button class="chip">Set a timer for 10 minutes</button>
-          <button class="chip">How's my system doing?</button>
-          <button class="chip">Explain PID control like I'm new to robotics</button>
+    <div class="subbar">
+      <div class="seg"><button class="active" data-nav="home">Chat Mode</button><button data-nav="overview">Overview</button></div>
+      <div class="spacer"></div>
+      <button class="agents" id="agentsPill" data-open-settings="models"><i class="pulse-dot"></i><span id="agentsText">Models Online</span><b id="agentsCount">0</b></button>
+    </div>
+
+    <!-- ============ CHAT VIEW ============ -->
+    <main class="view" id="viewChat">
+      <div class="scroll" id="chat">
+        <section class="hero" id="hero">
+          <div class="orb" id="orb" title="Tap to talk"><div class="orb-body"></div><div class="orb-shine"></div></div>
+          <p class="greet" id="greet">Good Morning</p>
+          <h1>WHAT'S ON YOUR MIND?</h1>
+          <p class="sub" id="heroSub">Ask anything, or tell me what to do on your computer.</p>
+        </section>
+        <div class="messages" id="messages"></div>
+
+        <section class="home-extra" id="homeExtra">
+          <div class="actions3">
+            <button class="acard" data-prompt="Give me a quick daily briefing: the time and date, my system status, and one focused goal for today.">
+              <div class="acard-top"><span class="aicon blue"><svg><use href="#i-sun"/></svg></span><b>Daily Briefing</b></div>
+              <div class="acard-foot"><span>Start My Day</span><svg><use href="#i-arrow"/></svg></div>
+            </button>
+            <button class="acard" data-prompt="How's my system doing?">
+              <div class="acard-top"><span class="aicon purple"><svg><use href="#i-cpu"/></svg></span><b>System Check</b></div>
+              <div class="acard-foot"><span>CPU, Memory &amp; Battery</span><svg><use href="#i-arrow"/></svg></div>
+            </button>
+            <button class="acard" data-prompt="Help me brainstorm 5 fresh robotics project ideas I could build this month, with parts lists.">
+              <div class="acard-top"><span class="aicon red"><svg><use href="#i-bulb"/></svg></span><b>Brainstorm Ideas</b></div>
+              <div class="acard-foot"><span>New Project Ideas</span><svg><use href="#i-arrow"/></svg></div>
+            </button>
+          </div>
+
+          <div class="panels">
+            <div class="panel">
+              <div class="panel-head"><svg><use href="#i-history"/></svg><span>Recent Conversations</span></div>
+              <div class="recent" id="recent"></div>
+              <button class="see-more" data-nav="history">See More <svg><use href="#i-arrow"/></svg></button>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><svg><use href="#i-grid"/></svg><span>Quick launch on your PC</span></div>
+              <div class="launch" id="launch"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- composer -->
+      <div class="composer-wrap" id="composerWrap">
+        <div class="composer">
+          <textarea id="input" rows="1" placeholder="Ask Anything..."></textarea>
+          <div class="interim" id="interim"></div>
+          <div class="crow">
+            <button class="cbtn sq" id="plusBtn" title="New chat"><svg><use href="#i-plus"/></svg></button>
+            <label class="cpill" title="How models are combined"><svg><use href="#i-bolt"/></svg>
+              <select id="modeSel">
+                <option value="auto">Auto</option>
+                <option value="council">Council</option>
+                <option value="race">Race</option>
+                <option value="single">Single</option>
+              </select>
+            </label>
+            <label class="cpill hidden" id="singleWrap" title="Model"><svg><use href="#i-models"/></svg><select id="singleSel"></select></label>
+            <label class="cpill" title="Personality"><svg><use href="#i-sparkle"/></svg><select id="personaSel"></select></label>
+            <div class="spacer"></div>
+            <button class="cpill toggle" id="wakeBtn" title="Always listen for the wake word"><svg><use href="#i-ear"/></svg><span id="wakeLabel">Jim</span></button>
+            <button class="cpill toggle" id="ttsBtn" title="Read replies aloud"><svg><use href="#i-speaker"/></svg></button>
+            <button class="cpill" id="micBtn" title="Talk (Ctrl+Space)"><svg><use href="#i-mic"/></svg><span>Voice</span></button>
+            <button class="sendbtn" id="sendBtn" title="Send"><svg><use href="#i-send"/></svg></button>
+          </div>
+        </div>
+        <div class="chips" id="chips">
+          <button>Open Spotify and Chrome</button>
+          <button>Next tab</button>
+          <button>Search for ESP32-C6 pinout</button>
+          <button>Set a timer for 10 minutes</button>
+          <button>Explain PID control simply</button>
         </div>
       </div>
-      <div class="messages" id="messages"></div>
-    </section>
+    </main>
 
-    <footer class="composer">
-      <div class="voice-bar">
-        <label class="switch" title="Always listen for the wake word">
-          <input type="checkbox" id="wakeToggle"><span class="slider"></span>
-          <span class="switch-label">Wake word "<b id="wakeLabel">Jim</b>"</span>
-        </label>
-        <label class="switch" title="Read replies aloud">
-          <input type="checkbox" id="ttsToggle"><span class="slider"></span>
-          <span class="switch-label">Voice replies</span>
-        </label>
-        <span class="interim" id="interim"></span>
+    <!-- ============ OVERVIEW VIEW ============ -->
+    <main class="view hidden" id="viewOverview">
+      <div class="scroll">
+        <div class="ov">
+          <div class="kpis" id="kpis"></div>
+          <div class="ov-grid">
+            <div class="panel">
+              <div class="panel-head"><svg><use href="#i-models"/></svg><span>Models</span><div class="spacer"></div><button class="btn small" id="testAll">Test all</button></div>
+              <div class="mlist" id="mlist"></div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><svg><use href="#i-clock"/></svg><span>Activity this session</span></div>
+              <div id="ovActivity" class="feed"><div class="muted small pad">Nothing yet. Try “open calculator”.</div></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="input-row">
-        <button class="mic" id="micBtn" title="Talk (Ctrl+Space)">
-          <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12h-2Z"/></svg>
-        </button>
-        <textarea id="input" rows="1" placeholder="Ask JIM anything, or give a command…"></textarea>
-        <button class="send" id="sendBtn" title="Send (Enter)">➤</button>
-      </div>
-    </footer>
-  </main>
+    </main>
+  </div>
+</div>
+
+<!-- ============ CONNECT SCREEN ============ -->
+<div class="connect hidden" id="connect">
+  <div class="connect-card">
+    <div class="orb small"><div class="orb-body"></div><div class="orb-shine"></div></div>
+    <h2>JIM isn't running on this computer</h2>
+    <p class="muted">This page is the interface. JIM's brain runs on your PC so it can open apps, listen and stay private.</p>
+    <ol>
+      <li>Install <a href="https://www.python.org/downloads/" target="_blank">Python 3.10+</a></li>
+      <li>Download JIM: <code>git clone https://github.com/Amaljith75/jim</code><br><span class="muted small">or <a href="https://github.com/Amaljith75/jim/archive/refs/heads/main.zip">download ZIP</a></span></li>
+      <li>Start it: double-click <code>scripts/start-windows.bat</code> (Mac/Linux: <code>./scripts/start-mac-linux.sh</code>)</li>
+      <li>Come back here and press <b>Connect</b>. If Chrome asks to allow access to devices on your local network, allow it.</li>
+    </ol>
+    <div class="row gap"><input id="serverUrl" class="grow" placeholder="http://localhost:8765"><button class="btn primary" id="connectBtn">Connect</button></div>
+    <p class="error small" id="connectErr"></p>
+  </div>
 </div>
 
 <!-- ============ SETTINGS ============ -->
@@ -88,19 +210,18 @@
   <div class="modal-card">
     <div class="modal-head">
       <div class="tabs" id="tabs">
-        <button data-tab="models" class="active">🧩 Models</button>
-        <button data-tab="personalities">🎭 Personalities</button>
-        <button data-tab="voice">🎙 Voice</button>
-        <button data-tab="system">🖥 System</button>
-        <button data-tab="memory">🧠 Memory</button>
+        <button data-tab="models" class="active">Models</button>
+        <button data-tab="personalities">Personalities</button>
+        <button data-tab="voice">Voice</button>
+        <button data-tab="system">System</button>
+        <button data-tab="memory">Memory</button>
       </div>
-      <button class="icon-btn" id="closeSettings">✕</button>
+      <button class="icon-btn" id="closeSettings"><svg><use href="#i-close"/></svg></button>
     </div>
     <div class="modal-body">
-      <!-- MODELS -->
       <div class="tab-pane" data-pane="models">
         <div class="pane-intro">
-          <p>JIM combines every <b>enabled</b> model that has a key. Free keys: Groq, Gemini, Cerebras, OpenRouter, Mistral. <b>Ollama</b> runs offline on your PC with no key. Any service with an OpenAI-compatible API can be added.</p>
+          <p>JIM combines every <b>enabled</b> model that has a key. Free keys: Groq, Gemini, Cerebras, OpenRouter, Mistral. <b>Ollama</b> runs offline on your PC with no key. You can add any service with an OpenAI-compatible API.</p>
           <div class="row gap">
             <label>Council size <input type="number" id="councilSize" min="2" max="8" class="num"></label>
             <label>Council merger <select id="synthSel"></select></label>
@@ -108,7 +229,7 @@
         </div>
         <div id="providerList" class="cards"></div>
         <div class="add-box">
-          <h3>＋ Add a model</h3>
+          <h3>Add a model</h3>
           <div class="grid2">
             <label>Preset<select id="presetSel"></select></label>
             <label>Display name<input id="newName" placeholder="e.g. DeepSeek"></label>
@@ -120,7 +241,6 @@
         </div>
       </div>
 
-      <!-- PERSONALITIES -->
       <div class="tab-pane hidden" data-pane="personalities">
         <div class="split">
           <div class="list" id="personaList"></div>
@@ -134,15 +254,14 @@
             </div>
             <div class="row gap">
               <button class="btn primary" id="pSave">Save</button>
-              <button class="btn" id="pNew">＋ New personality</button>
-              <button class="btn" id="pTest">▶ Hear it</button>
+              <button class="btn" id="pNew">New personality</button>
+              <button class="btn" id="pTest">Hear it</button>
               <button class="btn danger" id="pDelete">Delete</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- VOICE -->
       <div class="tab-pane hidden" data-pane="voice">
         <div class="grid2">
           <label>Speech recognition
@@ -159,11 +278,10 @@
           <label>Speed <input type="range" id="vRate" min="0.6" max="1.6" step="0.05"><span id="vRateV"></span></label>
           <label>Pitch <input type="range" id="vPitch" min="0.5" max="1.6" step="0.05"><span id="vPitchV"></span></label>
         </div>
-        <div class="row gap"><button class="btn primary" id="saveVoice">Save</button><button class="btn" id="testVoice">▶ Test voice</button></div>
-        <p class="muted small">The wake word works with Browser recognition while this page is open. For hands-free use with the browser closed, run <code>python voice_daemon.py</code> (see README). Shortcuts: <kbd>Ctrl</kbd>+<kbd>Space</kbd> talk · <kbd>Esc</kbd> stop speaking.</p>
+        <div class="row gap"><button class="btn primary" id="saveVoice">Save</button><button class="btn" id="testVoice">Test voice</button></div>
+        <p class="muted small">The wake word works with Browser recognition while this page is open. For hands-free use with the browser closed, run <code>python voice_daemon.py</code>. Shortcuts: <kbd>Ctrl</kbd>+<kbd>Space</kbd> talk · <kbd>Esc</kbd> stop speaking.</p>
       </div>
 
-      <!-- SYSTEM -->
       <div class="tab-pane hidden" data-pane="system">
         <div class="grid2">
           <label>Assistant name<input id="aName"></label>
@@ -171,6 +289,7 @@
           <label>Creativity (temperature) <input type="range" id="temp" min="0" max="1.5" step="0.05"><span id="tempV"></span></label>
           <label>Max reply length (tokens)<input type="number" id="maxTok" class="num" min="64" max="8192"></label>
           <label>Chat memory (turns)<input type="number" id="histTurns" class="num" min="0" max="50"></label>
+          <label>JIM server address<input id="serverSetting" placeholder="http://localhost:8765"></label>
         </div>
         <div class="toggles">
           <label class="switch"><input type="checkbox" id="allowCtl"><span class="slider"></span><span class="switch-label">Allow JIM to control this computer (apps, tabs, keys, volume)</span></label>
@@ -183,7 +302,6 @@
         <p class="muted small" id="platformInfo"></p>
       </div>
 
-      <!-- MEMORY -->
       <div class="tab-pane hidden" data-pane="memory">
         <p class="muted">Facts JIM remembers about you across every chat. Say “remember that …” or add them here.</p>
         <div class="row gap"><input id="factInput" placeholder="e.g. I'm building a pen plotter with a DLC32 board" class="grow"><button class="btn primary" id="addFact">Add</button></div>
@@ -195,6 +313,6 @@
 
 <div class="toast hidden" id="toast"></div>
 <div class="timers" id="timers"></div>
-<script src="/static/app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

@@ -205,6 +205,12 @@ def _(m):
 SPLIT = re.compile(r"\s*(?:,\s*)?\b(?:and then|then|and also|and|after that)\b\s*|\s*[;,]\s*")
 
 
+def _known(name: str) -> bool:
+    from .actions import APPS, ALIASES, WEBSITES, canonical_app
+    key = canonical_app(name)
+    return key in APPS or key in WEBSITES or name.lower() in ALIASES
+
+
 def match_one(text: str) -> tuple[str, dict] | None:
     for rx, fn in RULES:
         m = rx.match(text)
@@ -231,6 +237,8 @@ def match(text: str, wake_word: str = "jim") -> list[tuple[str, dict]] | None:
             c = match_one(clean(p, wake_word))
             if not c and verb:                      # "open chrome and spotify" -> "open spotify"
                 c = match_one(f"{verb} {p}")
+                if c and c[0] in ("open_app", "close_app") and not _known(c[1]["name"]):
+                    c = None                        # "open notepad and tell me a joke" -> LLM
             cmds.append(c)
             verb = p.split()[0] if c else verb
         if all(cmds):
