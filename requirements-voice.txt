@@ -1,0 +1,5 @@
+# Optional: offline speech + the always-on voice daemon
+faster-whisper>=1.0
+SpeechRecognition>=3.10
+PyAudio>=0.2.14
+pyttsx3>=2.90

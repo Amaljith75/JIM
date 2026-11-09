@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>J.I.M</title>
+<meta name="theme-color" content="#05080f">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="app">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-orb"></div>
+      <div class="brand-name" id="brandName">J.I.M</div>
+    </div>
+    <button class="btn primary wide" id="newChat">＋ New chat</button>
+    <div class="conv-list" id="convList"></div>
+    <div class="side-foot">
+      <button class="btn ghost wide" data-open-settings="memory">🧠 Memory</button>
+      <button class="btn ghost wide" data-open-settings="models">⚙ Settings</button>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn mobile-only" id="menuBtn" title="Chats">☰</button>
+      <div class="mini-orb" id="miniOrb" title="Tap to talk"></div>
+      <div class="status" id="status">Ready</div>
+      <div class="spacer"></div>
+      <select id="personaSel" class="pill-select" title="Personality"></select>
+      <select id="modeSel" class="pill-select" title="How models are combined">
+        <option value="auto">⚡ Auto (fallback)</option>
+        <option value="council">🏛 Council (combine)</option>
+        <option value="race">🏁 Race (fastest)</option>
+        <option value="single">🎯 Single model</option>
+      </select>
+      <select id="singleSel" class="pill-select hidden" title="Model"></select>
+      <span class="model-count" id="modelCount" title="Enabled models"></span>
+    </header>
+
+    <section class="chat" id="chat">
+      <div class="welcome" id="welcome">
+        <div class="orb" id="bigOrb"><div class="orb-core"></div><div class="orb-ring r1"></div><div class="orb-ring r2"></div><div class="orb-ring r3"></div></div>
+        <h1 id="welcomeTitle">Good to see you.</h1>
+        <p class="muted">Tap the orb or press <kbd>Ctrl</kbd>+<kbd>Space</kbd> to talk. Try:</p>
+        <div class="chips" id="examples">
+          <button class="chip">Open Spotify and Chrome</button>
+          <button class="chip">Next tab</button>
+          <button class="chip">Search for ESP32-C6 pinout</button>
+          <button class="chip">Set a timer for 10 minutes</button>
+          <button class="chip">How's my system doing?</button>
+          <button class="chip">Explain PID control like I'm new to robotics</button>
+        </div>
+      </div>
+      <div class="messages" id="messages"></div>
+    </section>
+
+    <footer class="composer">
+      <div class="voice-bar">
+        <label class="switch" title="Always listen for the wake word">
+          <input type="checkbox" id="wakeToggle"><span class="slider"></span>
+          <span class="switch-label">Wake word "<b id="wakeLabel">Jim</b>"</span>
+        </label>
+        <label class="switch" title="Read replies aloud">
+          <input type="checkbox" id="ttsToggle"><span class="slider"></span>
+          <span class="switch-label">Voice replies</span>
+        </label>
+        <span class="interim" id="interim"></span>
+      </div>
+      <div class="input-row">
+        <button class="mic" id="micBtn" title="Talk (Ctrl+Space)">
+          <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12h-2Z"/></svg>
+        </button>
+        <textarea id="input" rows="1" placeholder="Ask JIM anything, or give a command…"></textarea>
+        <button class="send" id="sendBtn" title="Send (Enter)">➤</button>
+      </div>
+    </footer>
+  </main>
+</div>
+
+<!-- ============ SETTINGS ============ -->
+<div class="modal hidden" id="settings">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="tabs" id="tabs">
+        <button data-tab="models" class="active">🧩 Models</button>
+        <button data-tab="personalities">🎭 Personalities</button>
+        <button data-tab="voice">🎙 Voice</button>
+        <button data-tab="system">🖥 System</button>
+        <button data-tab="memory">🧠 Memory</button>
+      </div>
+      <button class="icon-btn" id="closeSettings">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- MODELS -->
+      <div class="tab-pane" data-pane="models">
+        <div class="pane-intro">
+          <p>JIM combines every <b>enabled</b> model that has a key. Free keys: Groq, Gemini, Cerebras, OpenRouter, Mistral. <b>Ollama</b> runs offline on your PC with no key. Any service with an OpenAI-compatible API can be added.</p>
+          <div class="row gap">
+            <label>Council size <input type="number" id="councilSize" min="2" max="8" class="num"></label>
+            <label>Council merger <select id="synthSel"></select></label>
+          </div>
+        </div>
+        <div id="providerList" class="cards"></div>
+        <div class="add-box">
+          <h3>＋ Add a model</h3>
+          <div class="grid2">
+            <label>Preset<select id="presetSel"></select></label>
+            <label>Display name<input id="newName" placeholder="e.g. DeepSeek"></label>
+            <label class="span2">Base URL (OpenAI-compatible)<input id="newUrl" placeholder="https://api.example.com/v1"></label>
+            <label>Model ID<input id="newModel" placeholder="model-name"></label>
+            <label>API key<input id="newKey" type="password" placeholder="paste key (leave empty for local)"></label>
+          </div>
+          <div class="row gap"><button class="btn primary" id="addProvider">Add model</button><a id="presetLink" target="_blank" class="link"></a></div>
+        </div>
+      </div>
+
+      <!-- PERSONALITIES -->
+      <div class="tab-pane hidden" data-pane="personalities">
+        <div class="split">
+          <div class="list" id="personaList"></div>
+          <div class="editor">
+            <div class="grid2">
+              <label>Name<input id="pName"></label>
+              <label>Emoji<input id="pEmoji" maxlength="4"></label>
+              <label class="span2">How JIM should behave<textarea id="pPrompt" rows="6"></textarea></label>
+              <label>Voice speed <input type="range" id="pRate" min="0.6" max="1.6" step="0.05"><span id="pRateV"></span></label>
+              <label>Voice pitch <input type="range" id="pPitch" min="0.5" max="1.6" step="0.05"><span id="pPitchV"></span></label>
+            </div>
+            <div class="row gap">
+              <button class="btn primary" id="pSave">Save</button>
+              <button class="btn" id="pNew">＋ New personality</button>
+              <button class="btn" id="pTest">▶ Hear it</button>
+              <button class="btn danger" id="pDelete">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VOICE -->
+      <div class="tab-pane hidden" data-pane="voice">
+        <div class="grid2">
+          <label>Speech recognition
+            <select id="sttSel">
+              <option value="browser">Browser (Chrome/Edge, instant)</option>
+              <option value="whisper">Whisper (offline, on your PC)</option>
+            </select>
+          </label>
+          <label>Whisper model
+            <select id="whisperSel"><option>tiny</option><option>base</option><option>small</option><option>medium</option></select>
+          </label>
+          <label>Wake word<input id="wakeWord"></label>
+          <label>JIM's voice<select id="voiceSel"></select></label>
+          <label>Speed <input type="range" id="vRate" min="0.6" max="1.6" step="0.05"><span id="vRateV"></span></label>
+          <label>Pitch <input type="range" id="vPitch" min="0.5" max="1.6" step="0.05"><span id="vPitchV"></span></label>
+        </div>
+        <div class="row gap"><button class="btn primary" id="saveVoice">Save</button><button class="btn" id="testVoice">▶ Test voice</button></div>
+        <p class="muted small">The wake word works with Browser recognition while this page is open. For hands-free use with the browser closed, run <code>python voice_daemon.py</code> (see README). Shortcuts: <kbd>Ctrl</kbd>+<kbd>Space</kbd> talk · <kbd>Esc</kbd> stop speaking.</p>
+      </div>
+
+      <!-- SYSTEM -->
+      <div class="tab-pane hidden" data-pane="system">
+        <div class="grid2">
+          <label>Assistant name<input id="aName"></label>
+          <label>Your name<input id="uName" placeholder="so JIM can greet you"></label>
+          <label>Creativity (temperature) <input type="range" id="temp" min="0" max="1.5" step="0.05"><span id="tempV"></span></label>
+          <label>Max reply length (tokens)<input type="number" id="maxTok" class="num" min="64" max="8192"></label>
+          <label>Chat memory (turns)<input type="number" id="histTurns" class="num" min="0" max="50"></label>
+        </div>
+        <div class="toggles">
+          <label class="switch"><input type="checkbox" id="allowCtl"><span class="slider"></span><span class="switch-label">Allow JIM to control this computer (apps, tabs, keys, volume)</span></label>
+          <label class="switch"><input type="checkbox" id="confirmRisky"><span class="slider"></span><span class="switch-label">Ask before shutdown / restart / sleep / shell</span></label>
+          <label class="switch"><input type="checkbox" id="allowShell"><span class="slider"></span><span class="switch-label">Allow shell commands (advanced, use with care)</span></label>
+        </div>
+        <div class="row gap"><button class="btn primary" id="saveSystem">Save</button></div>
+        <h3>What JIM can do on your computer</h3>
+        <div class="tools" id="toolList"></div>
+        <p class="muted small" id="platformInfo"></p>
+      </div>
+
+      <!-- MEMORY -->
+      <div class="tab-pane hidden" data-pane="memory">
+        <p class="muted">Facts JIM remembers about you across every chat. Say “remember that …” or add them here.</p>
+        <div class="row gap"><input id="factInput" placeholder="e.g. I'm building a pen plotter with a DLC32 board" class="grow"><button class="btn primary" id="addFact">Add</button></div>
+        <ul class="facts" id="factList"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast hidden" id="toast"></div>
+<div class="timers" id="timers"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>

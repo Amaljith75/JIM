@@ -1,0 +1,80 @@
+[
+  {
+    "id": "ollama",
+    "name": "Ollama (local, offline)",
+    "base_url": "http://localhost:11434/v1",
+    "api_key": "",
+    "no_key": true,
+    "model": "llama3.2",
+    "enabled": true,
+    "priority": 1,
+    "signup_url": "https://ollama.com/download",
+    "notes": "Runs fully on your machine. Install Ollama, then run: ollama pull llama3.2"
+  },
+  {
+    "id": "groq",
+    "name": "Groq",
+    "base_url": "https://api.groq.com/openai/v1",
+    "api_key": "",
+    "model": "llama-3.3-70b-versatile",
+    "enabled": true,
+    "priority": 2,
+    "signup_url": "https://console.groq.com/keys",
+    "notes": "Very fast. Free tier, no card."
+  },
+  {
+    "id": "gemini",
+    "name": "Google Gemini (AI Studio)",
+    "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+    "api_key": "",
+    "model": "gemini-2.5-flash",
+    "enabled": true,
+    "priority": 3,
+    "signup_url": "https://aistudio.google.com/apikey",
+    "notes": "Big context, strong reasoning. Free tier."
+  },
+  {
+    "id": "cerebras",
+    "name": "Cerebras",
+    "base_url": "https://api.cerebras.ai/v1",
+    "api_key": "",
+    "model": "gpt-oss-120b",
+    "enabled": true,
+    "priority": 4,
+    "signup_url": "https://cloud.cerebras.ai",
+    "notes": "Extremely fast. Small context on the free tier."
+  },
+  {
+    "id": "openrouter",
+    "name": "OpenRouter (free models)",
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_key": "",
+    "model": "meta-llama/llama-3.3-70b-instruct:free",
+    "enabled": true,
+    "priority": 5,
+    "signup_url": "https://openrouter.ai/keys",
+    "notes": "Many ':free' models behind one key. Free model IDs change often - use 'Fetch models'."
+  },
+  {
+    "id": "mistral",
+    "name": "Mistral",
+    "base_url": "https://api.mistral.ai/v1",
+    "api_key": "",
+    "model": "mistral-small-latest",
+    "enabled": true,
+    "priority": 6,
+    "signup_url": "https://console.mistral.ai/api-keys",
+    "notes": "Free 'Experiment' plan."
+  },
+  {
+    "id": "github",
+    "name": "GitHub Models",
+    "base_url": "https://models.github.ai/inference",
+    "api_key": "",
+    "model": "openai/gpt-4.1-mini",
+    "enabled": false,
+    "priority": 7,
+    "signup_url": "https://github.com/settings/tokens",
+    "notes": "Use a GitHub personal access token with the 'models' permission."
+  }
+]
